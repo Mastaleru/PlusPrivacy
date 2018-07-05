@@ -46,17 +46,53 @@ angular.module('extensions', [])
                     return extensionsList;
                 }
 
-                var prepareExtension = function(extension){
+                function getSCD(path, callback) {
+
+                    var oReq = new XMLHttpRequest();
+
+                    oReq.open("GET", path);
+                    oReq.onreadystatechange = function(){
+                        if ( oReq.readyState == 4 ) {
+                            if ( oReq.status == 200 ) {
+                                callback({"found": true});
+                            } else {
+                                callback({"found": false});
+                            }
+                        }
+                    };
+                    oReq.send();
+                }
+
+                function checkSCDExistence(extension, callback) {
+                    if (extension.id) {
+                        getSCD("chrome-extension://" + extension.id + "/SCD.json", function (result) {
+                            if (result.found == true) {
+                                extension.hasSCD = true;
+                            }
+
+                            callback(extension);
+                        })
+                    }
+                }
+
+                var prepareExtension = function(extension, callback){
                     if (extension.icons && extension.icons instanceof Array) {
                         extension['icon'] = extension.icons.pop();
                         delete extension['icons'];
                     }
-                    return extension;
-                }
+                    checkSCDExistence(extension, callback);
+
+                };
+
 
                 var addExtension = function(extension){
-                    $scope.extensions.push(prepareExtension(extension));
-                    $scope.extensions = orderExtensions($scope.extensions);
+
+                    prepareExtension(extension,function(extension){
+                        console.log(extension);
+                        $scope.extensions.push(extension);
+                        $scope.extensions = orderExtensions($scope.extensions);
+                    })
+
                 }
 
                 var toggleExtension = function(extension){

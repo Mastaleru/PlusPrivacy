@@ -377,6 +377,7 @@ ul.nav.navbar-nav.pull-right li>a>.menu_item_content{
 #extensions_container table.table td{
     vertical-align: middle;
     text-align: left;
+    position: relative;
 }
 
 #extensions_container .dataTable > thead > tr > th[class*=sort]:after{
@@ -2561,7 +2562,8 @@ td.readonly{
 }
 
 td.publicprofilerequired,
-td.sendfacebooknotifications{
+td.sendfacebooknotifications,
+td.nameandprofilepicturerequired{
     background: greenyellow;
 }
 td.emailaddress{
@@ -2834,4 +2836,16 @@ div.scpNotLoggedIn{
     background: url("/operando/assets/images/privacy_oriented.png") no-repeat left center;
     padding-left: 30px;
     display: inline-block;
+}
+
+.has_scd {
+    background: url("/operando/assets/images/self_compliance.png") no-repeat left center;
+    padding-left: 30px;
+    display: inline-block;
+}
+
+.self_compliance{
+    position: absolute;
+    left: 100px;
+    top: 13px;
 }
